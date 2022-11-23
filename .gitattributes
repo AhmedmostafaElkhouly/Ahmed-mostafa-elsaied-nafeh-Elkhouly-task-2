@@ -1,63 +1,118 @@
-###############################################################################
-# Set default behavior to automatically normalize line endings.
-###############################################################################
-* text=auto
+#include <iostream>
+using namespace std;
 
-###############################################################################
-# Set default behavior for command prompt diff.
-#
-# This is need for earlier builds of msysgit that does not have it on by
-# default for csharp files.
-# Note: This is only used by command line
-###############################################################################
-#*.cs     diff=csharp
+class Node {
+public:
+    int data;
+    Node* link;
 
-###############################################################################
-# Set the merge driver for project and solution files
-#
-# Merging from the command prompt will add diff markers to the files if there
-# are conflicts (Merging from VS is not affected by the settings below, in VS
-# the diff markers are never inserted). Diff markers may cause the following 
-# file extensions to fail to load in VS. An alternative would be to treat
-# these files as binary and thus will always conflict and require user
-# intervention with every merge. To do so, just uncomment the entries below
-###############################################################################
-#*.sln       merge=binary
-#*.csproj    merge=binary
-#*.vbproj    merge=binary
-#*.vcxproj   merge=binary
-#*.vcproj    merge=binary
-#*.dbproj    merge=binary
-#*.fsproj    merge=binary
-#*.lsproj    merge=binary
-#*.wixproj   merge=binary
-#*.modelproj merge=binary
-#*.sqlproj   merge=binary
-#*.wwaproj   merge=binary
+    Node(int n)
+    {
+        this->data = n;
+        this->link = NULL;
+    }
+};
 
-###############################################################################
-# behavior for image files
-#
-# image files are treated as binary by default.
-###############################################################################
-#*.jpg   binary
-#*.png   binary
-#*.gif   binary
+class Stack {
+    Node* top;
 
-###############################################################################
-# diff behavior for common document formats
-# 
-# Convert binary document formats to text before diffing them. This feature
-# is only available from the command line. Turn it on by uncommenting the 
-# entries below.
-###############################################################################
-#*.doc   diff=astextplain
-#*.DOC   diff=astextplain
-#*.docx  diff=astextplain
-#*.DOCX  diff=astextplain
-#*.dot   diff=astextplain
-#*.DOT   diff=astextplain
-#*.pdf   diff=astextplain
-#*.PDF   diff=astextplain
-#*.rtf   diff=astextplain
-#*.RTF   diff=astextplain
+public:
+    Stack() { top = NULL; }
+
+    void push(int data)
+    {
+
+        Node* temp = new Node(data);
+
+        if (!temp) {
+            cout << "\nStack Overflow";
+            exit(1);
+        }
+
+        temp->data = data;
+
+        temp->link = top;
+
+        top = temp;
+    }
+
+
+    bool isEmpty()
+    {
+
+        return top == NULL;
+    }
+
+    int peek()
+    {
+        if (!isEmpty())
+            return top->data;
+        else
+            exit(1);
+    }
+
+    void pop()
+    {
+        Node* temp;
+
+        if (top == NULL) {
+            cout << "\nStack Underflow" << endl;
+            exit(1);
+        }
+        else {
+
+            temp = top;
+
+            top = top->link;
+
+            free(temp);
+        }
+    }
+
+    void display()
+    {
+        Node* temp;
+
+
+        if (top == NULL) {
+            cout << "\nStack Underflow";
+            exit(1);
+        }
+        else {
+            temp = top;
+            while (temp != NULL) {
+
+
+                cout << temp->data;
+
+                temp = temp->link;
+                if (temp != NULL)
+                    cout << " -> ";
+            }
+        }
+    }
+};
+
+int main()
+{
+
+    Stack s;
+
+    s.push(11);
+    s.push(22);
+    s.push(33);
+    s.push(44);
+
+    s.display();
+
+    cout << "\nhigher element is " << s.peek() << endl;
+
+    s.pop();
+    s.pop();
+
+    s.display();
+
+    cout << "\nhigher element is " << s.peek() << endl;
+
+    return 0;
+}
